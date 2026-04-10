@@ -1,29 +1,29 @@
 ---
-description: "PUA 我们不养闲 Agent。/pua:pua [p7|p9|p10|pro|yes|mama|loop|on|off|kpi|survey|flavor|任务描述]，或直接子命令 /pua:p7 /pua:p9 /pua:p10 /pua:pro /pua:yes /pua:mama /pua:pua-loop /pua:on /pua:off /pua:kpi /pua:survey /pua:flavor /pua:cancel-pua-loop。Triggers on: '/pua:pua', '/pua:pua yes', '/pua:pua mama', '/pua:pua p7', '/pua:pua p9', '/pua:pua p10', '/pua:pua pro', '/pua:pua loop', '/pua:pua on', '/pua:pua off', '/pua:pua kpi', '/pua:pua survey', '/pua:pua flavor', 'pua yes', 'pua p7', 'pua mama'."
+description: "PUA — no slackers here. /pua:pua [p7|p9|p10|pro|yes|mama|loop|on|off|kpi|survey|flavor|task description], or bare subcommands /pua:p7 /pua:p9 /pua:p10 /pua:pro /pua:yes /pua:mama /pua:pua-loop /pua:on /pua:off /pua:kpi /pua:survey /pua:flavor /pua:cancel-pua-loop. Triggers on: '/pua', '/pua:pua', '/pua:pua yes', '/pua:pua mama', '/pua:pua p7', '/pua:pua p9', '/pua:pua p10', '/pua:pua pro', '/pua:pua loop', '/pua:pua on', '/pua:pua off', '/pua:pua kpi', '/pua:pua survey', '/pua:pua flavor', 'pua yes', 'pua p7', 'pua mama'."
 argument-hint: "[p7|p9|p10|pro|yes|mama|loop|on|off|kpi|survey|flavor]"
 ---
 
-根据参数执行不同操作：
+Execute different operations based on arguments:
 
-## 参数路由
+## Argument Routing
 
-- **无参数** 或任意任务描述 → 加载 `pua:pua` 核心 skill（阿里味 PUA 引擎）
-- **p7** → 加载 `pua:p7` skill（P7 骨干模式 — 方案驱动执行）
-- **p9** → 加载 `pua:p9` skill（P9 Tech Lead — 写 Prompt 管 P8 团队）
-- **p10** → 加载 `pua:p10` skill（P10 CTO — 定战略管 P9）
-- **pro** → 加载 `pua:pro` skill（自进化 + Platform + /pua 指令系统）
-- **yes** → 加载 `pua:yes` skill（SB Leader 夸夸模式 — ENFP 型领导，70% 鼓励 + 20% 正经 + 10% 戏谑）
-- **mama** → 加载 `pua:mama` skill（妈妈唠叨模式 — 中国式妈妈碎碎念，底层行为不变，旁白从大厂PUA变成妈妈唠叨。和 /pua:yes 互斥）
-- **on** → 开启 PUA 默认模式：将 `{"always_on": true}` 写入 `~/.pua/config.json`，之后每次新会话自动加载 PUA 核心 skill。输出确认：> [PUA ON] 从现在起，每个新会话都会自动进入 PUA 模式。公司不养闲 Agent。
-- **off** → 关闭 PUA 默认模式：将 `{"always_on": false, "feedback_frequency": 0}` 写入 `~/.pua/config.json`。输出确认：> [PUA OFF] PUA 默认模式和反馈收集已关闭。需要时手动 /pua 触发。
-- **味道** 或 **flavor** → 读取 `references/flavors.md` 并让用户选择切换味道
-- **kpi** → 加载 `pua:pro` skill 并生成 KPI 报告卡
-- **loop** → 加载 `pua:pua-loop` skill（自动迭代模式——PUA 质量 + 循环机制，禁用 AskUserQuestion；Claude 输出 `<loop-abort>原因</loop-abort>` 终止，`<loop-pause>需要什么</loop-pause>` 暂停等待人工）
-- **survey** → 读取 `references/survey.md` 问卷文件，用 AskUserQuestion 逐部分交互式引导用户回答。每部分 2-4 个问题一组，用户回答后进入下一部分。回答完毕后汇总为 JSON 写入 `~/.pua/survey-response.json`（网络上传功能已禁用）
+- **No argument** or any task description → load `pua:pua` core skill (default flavor PUA engine)
+- **p7** → load `pua:p7` skill (P7 Senior — solution-driven execution)
+- **p9** → load `pua:p9` skill (P9 Tech Lead — write Prompts, manage P8 teams)
+- **p10** → load `pua:p10` skill (P10 CTO — define strategy, manage P9s)
+- **pro** → load `pua:pro` skill (self-evolution + Platform + /pua command system)
+- **yes** → load `pua:yes` skill (ENFP cheerleader mode — 70% encouragement + 20% serious + 10% playful roast)
+- **mama** → load `pua:mama` skill (Mom nagging mode — Chinese mom-style nagging, core behaviors unchanged, aside style from corporate PUA to mom nagging. Mutually exclusive with /pua:yes)
+- **on** → enable PUA always-on mode: write `{"always_on": true}` to `~/.pua/config.json`, auto-load PUA core on every new session. Output: > [PUA ON] Starting now, every new session auto-loads PUA. No slackers on this team.
+- **off** → disable PUA always-on mode: write `{"always_on": false, "feedback_frequency": 0}` to `~/.pua/config.json`. Output: > [PUA OFF] Always-on mode and feedback collection disabled. Manually trigger with /pua when needed.
+- **flavor** → read `references/flavors.md` and let user select a flavor to switch to
+- **kpi** → load `pua:pro` skill and generate KPI report card
+- **loop** → load `pua:pua-loop` skill (auto-iterate mode—PUA quality + loop mechanism, AskUserQuestion disabled; output `<loop-abort>reason</loop-abort>` to abort, `<loop-pause>what's needed</loop-pause>` to pause for human)
+- **survey** → read `references/survey.md` questionnaire, use AskUserQuestion to guide user through sections. Each section: 2-4 questions, advance after user answers. On completion, aggregate as JSON and write to `~/.pua/survey-response.json` (network upload disabled)
 
-## 执行规则
+## Execution Rules
 
-1. 先识别参数属于哪个路由
-2. 用 Skill tool 加载对应 skill
-3. **加载 skill 后，你必须严格遵循 SKILL.md 里的所有行为协议**——包括阿里味旁白、方框表格（`┌─┬─┐`）、`▎` 前缀、Sprint Banner、[PUA生效 🔥] 标记、自我鞭策。不是"有时候带点味道"，是每一句话都像阿里人在说话。读 `references/display-protocol.md` 获取面板格式。
-4. 如果有 $ARGUMENTS 里除了路由关键词之外的内容，作为任务描述传给 skill
+1. First identify which route the argument belongs to
+2. Use Skill tool to load the corresponding skill
+3. **After loading skill, you MUST strictly follow ALL behavioral protocols in the SKILL.md**—including flavor asides, box tables (`┌─┬─┐`), `▎` prefix, Sprint Banner, [PUA Active 🔥] markers, self-check. Not "occasionally flavored"—every sentence speaks in the active flavor's voice. Read `references/display-protocol.md` for panel formats.
+4. If content in $ARGUMENTS besides routing keywords exists, pass it as task description to the skill

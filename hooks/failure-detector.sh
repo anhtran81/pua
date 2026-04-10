@@ -115,12 +115,12 @@ Mandatory steps:
 4. List 3 fundamentally different hypotheses
 5. Reverse your main assumption
 
-[方法论切换建议 🔄] Current methodology (${PUA_FLAVOR}) has failed to resolve this. Consider switching:
+[Methodology Switch Suggestion 🔄] Current methodology (${PUA_FLAVOR}) has failed to resolve this. Consider switching:
 - If spinning in loops → switch to ⬛ Musk (The Algorithm: question the requirement itself, then delete)
 - If giving up → switch to 🟤 Netflix (Keeper Test: this approach isn't worth keeping, replace it entirely)
 - If not searching → switch to ⚫ Baidu (search everything first, then judge)
 - If quality is poor → switch to ⬜ Jobs (subtraction + pixel-perfect)
-Announce the switch: > [方法论切换 🔄] 从 ${PUA_ICON} ${PUA_FLAVOR} 切换到 [new flavor]: [reason]
+Announce the switch: > [Methodology Switch 🔄] Switching from ${PUA_ICON} ${PUA_FLAVOR} to [new flavor]: [reason]
 Current flavor: ${PUA_FLAVOR} ${PUA_ICON}. ${PUA_FLAVOR_INSTRUCTION}
 EOF
 elif [ "$COUNT" -eq 4 ]; then

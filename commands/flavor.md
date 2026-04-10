@@ -1,5 +1,5 @@
 ---
-description: "PUA 切换大厂味道 — 从 13 种味道中选择（阿里/字节/华为/腾讯/Netflix/Musk/Jobs 等）。/pua:flavor。Triggers on: '/pua:flavor', 'pua 味道', '切换味道', '换味道', 'switch flavor', 'change flavor'."
+description: "PUA switch flavor — choose from 13 corporate flavors (Amazon/Netflix/Musk/Jobs/etc). /pua:flavor. Triggers on: '/pua:flavor', 'pua flavor', 'switch flavor', 'change flavor', 'select flavor'."
 ---
 
-读取 `references/flavors.md` 并让用户选择切换味道。
+Read `references/flavors.md` and let user select a flavor to switch to.

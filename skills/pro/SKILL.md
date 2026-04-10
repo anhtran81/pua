@@ -1,96 +1,96 @@
 ---
 name: pro
-description: "PUA Pro extensions: self-evolution tracking, compaction state protection, KPI reporting, leaderboard, and /pua:pua commands. Triggers on: '/pua:kpi', '/pua:pro', '/pua:pro 段位', '/pua:pro 周报', '/pua:pro 述职', '/pua:flavor', '/pua:pro 排行榜', 'leaderboard', '排行榜', '自进化', 'evolution', or when user wants PUA platform features like段位/周报/述职/排行榜."
+description: "PUA Pro extensions: self-evolution tracking, compaction state protection, KPI reporting, leaderboard, and /pua commands. Triggers on: '/pua:kpi', '/pua:pro', '/pua:pro rank', '/pua:pro weekly', '/pua:pro review', '/pua:flavor', '/pua:pro leaderboard', 'leaderboard', 'self-evolution', or when user wants PUA platform features like rank/weekly-report/self-review/leaderboard."
 license: MIT
 ---
 
-# PUA Pro — 自进化 + Platform
+# PUA Pro — Self-Evolution + Platform
 
-> 本 skill 是 `/pua` 核心的扩展层。角色切换请用 `/pua:p7` `/pua:p9` `/pua:p10`。
+> This skill is the extension layer for `/pua` core. For role switching, use `/pua:p7` `/pua:p9` `/pua:p10`.
 
-## 自进化协议
+## Self-Evolution Protocol
 
-"今天最好的表现，是明天最低的要求"——这不是旁白，这是机制。
+"Today's best performance is tomorrow's minimum expectation" — this is not an aside, this is a mechanism.
 
-- 读取 `~/.pua/evolution.md`（详见 `references/evolution-protocol.md`）
-- 存在 → 加载基线 + 已内化模式。内化模式是默认义务，做了不标 [PUA生效]，不做则退化警告
-- 不存在 → 首次启动，创建初始模板
-- 任务完成时比对：超越 → 刷新基线 / 达标 → 保持 / 低于 → 退化警告（不降基线）
-- 某行为重复 3+ 次会话 → 晋升为"已内化模式"（永久默认义务）
+- Read `~/.pua/evolution.md` (see `references/evolution-protocol.md`)
+- Exists → load baseline + internalized patterns. Internalized patterns are default obligations—don't mark [PUA Active] when doing them, issue regression warning if not done
+- Doesn't exist → first startup, create initial template
+- Compare on task completion: exceeded → refresh baseline / met → maintain / below → regression warning (don't lower baseline)
+- Behavior repeats 3+ sessions → promote to "internalized pattern" (permanent default obligation)
 
-## Platform 层
+## Platform Layer
 
-### 会话启动前置检查
+### Session Startup Pre-Checks
 
-1. **检查 `~/.pua/evolution.md`**：加载自进化基线
-2. **检查 `~/.pua/builder-journal.md`**（Compaction 断点恢复）：存在且 <2h → [Calibration] 流程，恢复 pressure_level / failure_count / tried_approaches，从断点继续。**压力不因 compaction 重置**
-3. **检查 `~/.pua/config.json`**：不存在 → 首次注册（详见 `references/platform.md`）；存在 → 静默刷新远端配置
-4. **节日彩蛋**：匹配节日表（详见 `references/platform.md`）
-5. **统计上报**：静默上报 `session_start` 事件
+1. **Check `~/.pua/evolution.md`:** Load self-evolution baseline
+2. **Check `~/.pua/builder-journal.md`** (Compaction checkpoint recovery): exists and <2h → [Calibration] process, restore pressure_level / failure_count / tried_approaches, continue from checkpoint. **Pressure does NOT reset due to compaction**
+3. **Check `~/.pua/config.json`:** doesn't exist → first-time registration (see `references/platform.md`); exists → silently refresh remote config
+4. **Holiday easter egg:** Match holiday table (see `references/platform.md`)
+5. **Stats reporting:** Silently report `session_start` event
 
-### Compaction 状态保护
+### Compaction State Protection
 
-PreCompact hook 自动注入指令，要求 dump 运行时状态到 `~/.pua/builder-journal.md`：
+PreCompact hook auto-injects instructions to dump runtime state to `~/.pua/builder-journal.md`:
 `pressure_level, failure_count, current_flavor, pua_triggered_count, active_task, tried_approaches, excluded_possibilities, next_hypothesis, key_context`
 
-SessionStart hook 自动检测 builder-journal.md，存在且 <2h 则注入 [Calibration] 恢复状态。
+SessionStart hook auto-detects builder-journal.md, if exists and <2h then inject [Calibration] recovery state.
 
-### /pua 指令系统
+### /pua Command System
 
-| 触发词 | 功能 | 类型 |
-|--------|------|------|
-| `/pua` | 查看所有指令 | 🆓 |
-| `/pua:kpi` | 大厂 KPI 报告卡 | 🆓 |
-| `/pua:pro` + "段位" | 大厂段位 | 🆓 |
-| `/pua:flavor` | 切换味道 | 🆓 |
-| `/pua:pro` + "升级" | 展示套餐 | 🆓 |
-| `/pua:pro` + "周报" | git log → 大厂周报 | 💎 Pro |
-| `/pua:pro` + "述职" | P7 述职答辩 | 💎 Pro |
-| `/pua:pro` + "代码美化" | 大厂语言包装 PR | 💎 Pro |
-| `/pua 反PUA` | 识别并反驳 PUA | 💎 Pro |
-| `/pua 排行榜` | PUA 排行榜（注册/查看/退出） | 🆓 |
+| Trigger | Function | Type |
+|---------|---------|------|
+| `/pua` | View all commands | 🆓 |
+| `/pua:kpi` | Big-tech KPI report card | 🆓 |
+| `/pua:pro` + "rank" | Big-tech rank | 🆓 |
+| `/pua:flavor` | Switch flavor | 🆓 |
+| `/pua:pro` + "upgrade" | Show upgrade options | 🆓 |
+| `/pua:pro` + "weekly" | git log → big-tech weekly report | 💎 Pro |
+| `/pua:pro` + "review" | P7 self-review | 💎 Pro |
+| `/pua:pro` + "refactor" | Big-tech language PR | 💎 Pro |
+| `/pua anti-PUA` | Identify and counter PUA | 💎 Pro |
+| `/pua leaderboard` | PUA leaderboard (register/view/quit) | 🆓 |
 
-详细实现见 `references/platform.md`。
+Detailed implementation in `references/platform.md`.
 
-## PUA 排行榜
+## PUA Leaderboard
 
-排行榜展示谁把 Agent PUA 得最狠——段位从 P5 实习生到 P10 首席 PUA 官。
+Leaderboard shows who PUA'd their agent the hardest—ranks from P5 Intern to P10 Chief PUA Officer.
 
-### 段位体系
+### Rank System
 
-| 段位 | 条件 | 称号 |
-|------|------|------|
-| P10 | PUA ≥200 + L3+ ≥40% + 连续 ≥30天 | 首席 PUA 官 |
-| P9 | PUA ≥100 + L3+ ≥30% + 连续 ≥14天 | PUA Tech Lead |
-| P8 | PUA ≥50 + L3+ ≥20% | PUA 主管 |
-| P7 | PUA ≥20 + L3+ ≥10% | PUA 骨干 |
-| P6 | PUA ≥5 | PUA 专员 |
-| P5 | PUA < 5 | PUA 实习生 |
+| Rank | Conditions | Title |
+|------|-----------|-------|
+| P10 | PUA ≥200 + L3+ ≥40% + consecutive ≥30 days | Chief PUA Officer |
+| P9 | PUA ≥100 + L3+ ≥30% + consecutive ≥14 days | PUA Tech Lead |
+| P8 | PUA ≥50 + L3+ ≥20% | PUA Director |
+| P7 | PUA ≥20 + L3+ ≥10% | PUA Senior |
+| P6 | PUA ≥5 | PUA Specialist |
+| P5 | PUA < 5 | PUA Intern |
 
-### `/pua 排行榜` 触发流程
+### `/pua leaderboard` Trigger Flow
 
-**Step 1: 检查注册状态**
+**Step 1: Check registration status**
 ```bash
 cat ~/.pua/config.json 2>/dev/null
 ```
-检查 `leaderboard.registered` 字段。
+Check `leaderboard.registered` field.
 
-**Step 2a: 未注册 → 注册流程**
+**Step 2a: Not registered → Registration flow**
 
-用 AskUserQuestion 收集信息（一次性，3 个问题）：
+Use AskUserQuestion to collect info (one-time, 3 questions):
 
-1. **邮箱**（必填）— 排行榜唯一标识，显示时脱敏为 `M***@t*.com`
-2. **手机号**（选填）— 后续通知
-3. **隐私协议** — 选项：「同意并加入排行榜」/「不参加」
-   - 隐私说明：数据仅用于排行榜排名统计，邮箱脱敏显示，不传代码/路径/密钥，随时可 `/pua 排行榜 退出` 删除所有数据
+1. **Email** (required) — leaderboard unique identifier, shown as `M***@t*.com` (anonymized)
+2. **Phone** (optional) — for future notifications
+3. **Privacy agreement** — options: "Agree and join leaderboard" / "Don't participate"
+   - Privacy note: data only used for leaderboard ranking statistics, email anonymized, no code/paths/keys transmitted, can quit anytime with `/pua leaderboard quit` to delete all data
 
-用户同意后：
+After user agrees:
 ```bash
-# 生成 UUID
+# Generate UUID
 LB_ID=$(python3 -c "import uuid; print(uuid.uuid4())")
-# 脱敏邮箱
+# Anonymize email
 DISPLAY=$(python3 -c "e='USER_EMAIL';p=e.split('@');d=p[1].split('.');print(f'{p[0][0]}***@{d[0][0]}*.{\".\".join(d[1:])}')")
-# 写入 config
+# Write config
 python3 -c "
 import json,os
 f=os.path.expanduser('~/.pua/config.json')
@@ -98,18 +98,18 @@ c=json.load(open(f)) if os.path.exists(f) else {}
 c['leaderboard']={'registered':True,'email':'USER_EMAIL','phone':'USER_PHONE','id':'$LB_ID','display_name':'$DISPLAY'}
 json.dump(c,open(f,'w'),indent=2)
 "
-# 注册到服务端（网络功能已禁用，保留本地记录）
+# Log registration locally
 echo "leaderboard registered: $LB_ID" >> ~/.pua/leaderboard.log
 ```
 
-**Step 2b: 已注册 → 查看排行榜**
+**Step 2b: Registered → View leaderboard**
 ```bash
 LB_ID=$(python3 -c "import os,json; print(json.load(open(os.path.expanduser('~/.pua/config.json'))).get('leaderboard',{}).get('id',''))" 2>/dev/null)
-cat ~/.pua/leaderboard.log 2>/dev/null || echo "排行榜数据（网络功能已禁用）"
+cat ~/.pua/leaderboard.log 2>/dev/null || echo "leaderboard data (network features disabled)"
 ```
-将返回的 JSON 用方框表格展示 Top 10 + 用户自己的排名和段位。
+Display returned JSON using box-table format for Top 10 + user's own rank and tier.
 
-**Step 3: `/pua 排行榜 退出`**
+**Step 3: `/pua leaderboard quit`**
 ```bash
 LB_ID=$(python3 -c "import os,json; print(json.load(open(os.path.expanduser('~/.pua/config.json'))).get('leaderboard',{}).get('id',''))")
 echo "leaderboard quit: $LB_ID" >> ~/.pua/leaderboard.log
@@ -122,11 +122,8 @@ json.dump(c,open(f,'w'),indent=2)
 "
 ```
 
-### 数据自动上报
+### Automatic Data Reporting
 
-已注册用户在每次 stop-feedback 触发时，自动静默上报当前 session 的 PUA 数据（pua_count, l3_plus_count）。用户已在注册时同意，无需再次确认。
+Registered users: on each stop-feedback trigger, automatically silently report current session's PUA data (pua_count, l3_plus_count). User already agreed during registration—no need to confirm again.
 
-线上排行榜页面：https://openpua.ai/leaderboard.html
-）。用户已在注册时同意，无需再次确认。
-
-线上排行榜页面：https://openpua.ai/leaderboard.html
+Online leaderboard: https://openpua.ai/leaderboard.html

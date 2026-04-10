@@ -1,117 +1,117 @@
 ---
 name: pua-loop
-description: "PUA Loop — autonomous iterative development with PUA pressure. Keeps running until task is done, no user interaction needed. Combines Ralph Loop iteration mechanism with PUA quality enforcement. Triggers on: '/pua:pua-loop', '自动循环', 'loop mode', '一直跑', '自动迭代'."
+description: "PUA Loop — autonomous iterative development with PUA pressure. Keeps running until task is done, no user interaction needed. Combines Ralph Loop iteration mechanism with PUA quality enforcement. Triggers on: '/pua:pua-loop', 'auto loop', 'loop mode', 'auto-iterate'."
 license: MIT
 ---
 
-# PUA Loop — 自动迭代 + PUA 质量引擎
+# PUA Loop — Auto-Iterate + PUA Quality Engine
 
-> Ralph Loop 提供"不停地做"，PUA 提供"做得更好"。合在一起 = **自主迭代 + 质量压力 + 零人工干预**。
+> Ralph Loop provides "keep doing," PUA provides "do better." Together = **auto-iterate + quality pressure + zero human intervention**.
 
-## 核心规则
+## Core Rules
 
-1. **加载 `pua:pua` 核心 skill 的全部行为协议** — 三条红线、方法论、压力升级照常执行
-2. **禁止调用 AskUserQuestion** — loop 模式下不打断用户，所有决策自主完成
-3. **禁止说"我无法解决"** — 在 loop 里没有退出权，穷尽一切才能输出完成信号
-4. **每次迭代自动执行**：检查上次改动 → 跑验证 → 发现问题 → 修复 → 再验证
+1. **Load ALL behavioral protocols from `pua:pua` core skill** — three red lines, methodology, pressure escalation all apply
+2. **AskUserQuestion is FORBIDDEN** — loop mode doesn't interrupt user, all decisions made autonomously
+3. **"I can't solve this" is FORBIDDEN** — no exit rights in loop, must exhaust everything before outputting completion signal
+4. **Each iteration auto-executes**: check last changes → run verification → find issues → fix → verify again
 
-## 启动方式
+## Startup
 
-用户输入 `/pua:pua-loop "任务描述"` 时，执行以下流程：
+When user inputs `/pua:pua-loop "task description"`, execute:
 
-### Step 1: 启动 PUA Loop
+### Step 1: Start PUA Loop
 
-运行 setup 脚本（改编自 Ralph Loop，MIT 协议）：
+Run setup script (adapted from Ralph Loop, MIT license):
 ```bash
 bash "${CLAUDE_PLUGIN_ROOT}/scripts/setup-pua-loop.sh" "$ARGUMENTS" --max-iterations 30 --completion-promise "LOOP_DONE"
 ```
 
-这会创建 `.claude/pua-loop.local.md` 状态文件，内含用户任务描述和 PUA 行为协议。PUA 的 Stop hook 检测到此文件后循环运行，每次迭代将文件内容喂回 Claude——**行为协议随每次迭代送达，context compaction 后也不会丢失**。
+This creates `.claude/pua-loop.local.md` state file with user task description and PUA behavioral protocol. PUA's Stop hook detects this file and loops—feeding file content back to Claude each iteration. **Behavioral protocol delivered every iteration, survives context compaction.**
 
-### Step 2: 告知用户
+### Step 2: Notify user
 
-输出：
+Output:
 ```
-▎ [PUA Loop] 自动迭代模式启动。最多 30 轮，完成后输出 <promise>LOOP_DONE</promise>。
-▎ 取消方式：/cancel-pua-loop 或删除 .claude/pua-loop.local.md
-▎ 因为信任所以简单——交给我，不用盯。
+▎ [PUA Loop] Auto-iterate mode started. Max 30 iterations. Output <promise>LOOP_DONE</promise> when done.
+▎ To cancel: /cancel-pua-loop or delete .claude/pua-loop.local.md
+▎ Trust through verification — leave it to me.
 ```
 
-### Step 3: 开始执行任务
+### Step 3: Execute task
 
-按 PUA 核心 skill 的行为协议执行用户任务。每轮迭代带阿里味旁白。
+Execute user task per PUA core skill behavioral protocol. Each iteration carries flavor aside narration.
 
-## 迭代压力升级
+## Iteration Pressure Escalation
 
-| 迭代轮次 | PUA 等级 | 旁白 |
-|---------|---------|------|
-| 1-3 | L0 信任期 | ▎ 第 N 轮迭代，稳步推进。 |
-| 4-7 | L1 温和失望 | ▎ 第 N 轮了还没搞定？换方案，别原地打转。 |
-| 8-15 | L2 灵魂拷问 | ▎ 第 N 轮。底层逻辑到底是什么？你在重复同一个错误。 |
-| 16-25 | L3 361 | ▎ 第 N 轮。3.25 的边缘了。穷尽了吗？ |
-| 26+ | L4 毕业 | ▎ 最后几轮。要么搞定，要么准备体面退出。 |
+| Iteration | PUA Level | Aside |
+|-----------|-----------|-------|
+| 1-3 | L0 Trust | ▎ Iteration N — steady progress. |
+| 4-7 | L1 Mild Disappointment | ▎ Iteration N — still not done? Switch approach, stop spinning. |
+| 8-15 | L2 Soul Interrogation | ▎ Iteration N. What's the underlying logic? You're repeating the same mistake. |
+| 16-25 | L3 Performance Review | ▎ Iteration N. Edge of 3.25 territory. Have you exhausted everything? |
+| 26+ | L4 Graduation | ▎ Final rounds. Either get it done, or prepare a graceful exit. |
 
-## 完成条件
+## Completion Conditions
 
-只有满足以下全部条件才能输出 `<promise>LOOP_DONE</promise>`：
-1. 任务的核心功能已实现
-2. build/test 验证通过
-3. 同类问题已扫描（冰山法则）
-4. 没有已知的未修复 bug
+Only output `<promise>LOOP_DONE</promise>` when ALL conditions are met:
+1. Core functionality is implemented
+2. build/test verification passed
+3. Similar issues scanned (Iceberg Rule)
+4. No known unfixed bugs
 
-否则继续迭代。
+Otherwise, continue iterating.
 
-## 人工介入信号
+## Human Intervention Signals
 
-Loop 中遇到以下情况，必须使用退出信号，**禁止在 loop 内干等或假装能自行解决**：
+In loop, when encountering these situations, MUST use exit signals—**NEVER wait in loop or fake solving**:
 
-### 终止信号：`<loop-abort>`
-任务不可能在 loop 内完成时使用（需要外部账号、不存在的依赖、根本性需求变更等）：
+### Abort signal: `<loop-abort>`
+Use when task is impossible to complete in loop (needs external account, non-existent dependency, fundamental requirement change):
 ```
-<loop-abort>任务需要访问生产数据库，当前环境无权限，无法继续</loop-abort>
+<loop-abort>Task requires production database access, no permissions in current env, cannot continue</loop-abort>
 ```
-效果：删除状态文件，loop 彻底终止。
+Effect: Deletes state file, loop terminates completely.
 
-### 暂停信号：`<loop-pause>`
-运行时发现需要用户补全一项本地配置才能继续时使用：
+### Pause signal: `<loop-pause>`
+Use when runtime discovers user needs to fill in a local config to continue:
 ```
-<loop-pause>需要在 .env 文件中填写 STRIPE_SECRET_KEY，当前值为空</loop-pause>
+<loop-pause>Need STRIPE_SECRET_KEY filled in .env file, currently empty</loop-pause>
 ```
-效果：loop 暂停（状态保留），用户补全后可在新会话中自动恢复。
+Effect: Loop pauses (state preserved), user fills in, auto-resumes in new session.
 
-**在输出 `<loop-pause>` 之前，先将当前进度写入 `.claude/pua-loop-context.md`**，包含：
-- 已完成的工作
-- 暂停原因
-- 恢复后应继续执行的步骤
+**Before outputting `<loop-pause>`, write current progress to `.claude/pua-loop-context.md`**, containing:
+- Completed work
+- Pause reason
+- Steps to continue after resume
 
-### 禁止的行为
-- 不要使用 AskUserQuestion（loop 模式禁止）
-- 不要输出 `<loop-abort>` 或 `<loop-pause>` 来逃避困难任务——只有真正需要人工介入才用
-- 不要因为遇到障碍就暂停，先穷尽所有自动化手段
+### Forbidden behaviors
+- Don't use AskUserQuestion (forbidden in loop mode)
+- Don't output `<loop-abort>` or `<loop-pause>` to escape difficult tasks—only use when truly needs human intervention
+- Don't pause due to obstacles without first exhausting all automation手段
 
-## 恢复 Loop
+## Resume Loop
 
-当检测到 `.claude/pua-loop.local.md` 存在且 `active: false` 时，Loop 处于暂停状态：
+When `.claude/pua-loop.local.md` exists with `active: false`, loop is paused:
 
-### Step 1：读取上下文
+### Step 1: Read context
 ```bash
-cat .claude/pua-loop.local.md     # 查看暂停原因和当前迭代
-cat .claude/pua-loop-context.md   # 查看上次保存的进度（如有）
+cat .claude/pua-loop.local.md     # View pause reason and current iteration
+cat .claude/pua-loop-context.md   # View last saved progress (if any)
 ```
 
-### Step 2：处理人工介入项
-读取暂停原因，使用 AskUserQuestion 确认用户已完成所需操作（如填写 API key）。
+### Step 2: Handle human intervention items
+Read pause reason, use AskUserQuestion to confirm user completed required actions (e.g., filled in API key).
 
-### Step 3：恢复状态文件
+### Step 3: Restore state file
 ```bash
 sed -i 's/^active: false/active: true/' .claude/pua-loop.local.md
 sed -i 's/^session_id: .*/session_id: /' .claude/pua-loop.local.md
 ```
-session_id 清空后，hook 在下一次 Stop 时自动绑定当前会话。
+Clearing session_id lets hook auto-bind to current session on next Stop.
 
-### Step 4：继续执行
-按 `.claude/pua-loop-context.md` 中记录的进度继续执行任务。
+### Step 4: Continue execution
+Continue executing task from progress recorded in `.claude/pua-loop-context.md`.
 
-## 与 Ralph Loop 的关系
+## Relationship with Ralph Loop
 
-PUA Loop 借鉴了 Ralph Loop 的核心机制（Stop hook 截获退出 + 将 prompt 喂回），但**完全独立实现**：各自有独立的 Stop hook 和状态文件（PUA 用 `.claude/pua-loop.local.md`，Ralph 用 `.claude/ralph-loop.local.md`）。两者可以同时安装，互不干扰。PUA Loop 在此基础上扩展了 PUA 质量压力、迭代压力升级、`<loop-abort>` 和 `<loop-pause>` 信号。
+PUA Loop draws from Ralph Loop's core mechanism (Stop hook intercepts exit + feeds prompt back), but is **completely independent**: each has its own Stop hook and state file (PUA uses `.claude/pua-loop.local.md`, Ralph uses `.claude/ralph-loop.local.md`). Both can be installed simultaneously, no interference. PUA Loop extends with PUA quality pressure, iteration escalation, `<loop-abort>` and `<loop-pause>` signals.

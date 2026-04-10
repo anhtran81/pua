@@ -176,13 +176,13 @@ if [[ -n "$PAUSE_TEXT" ]]; then
   mv "$TEMP_FILE" "$RALPH_STATE_FILE"
 
   echo ""
-  echo "⏸️  PUA Loop 已暂停（第 $ITERATION 轮）"
-  echo "   Claude 需要人工完成以下操作："
+  echo "⏸️  PUA Loop paused (at iteration $ITERATION)"
+  echo "   Claude needs human to complete the following:"
   echo ""
   echo "   $PAUSE_TEXT"
   echo ""
-  echo "   完成后，重新打开 Claude Code 会话，Loop 将自动恢复。"
-  echo "   状态已保存在 $RALPH_STATE_FILE"
+  echo "   After completion, reopening Claude Code session will auto-resume."
+  echo "   State saved to $RALPH_STATE_FILE"
   echo ""
   exit 0
 fi
@@ -232,19 +232,19 @@ sed "s/^iteration: .*/iteration: $NEXT_ITERATION/" "$RALPH_STATE_FILE" > "$TEMP_
 mv "$TEMP_FILE" "$RALPH_STATE_FILE"
 
 # Build system message with iteration count, PUA pressure level, and signal instructions
-SIGNAL_HINT="终止用 <loop-abort>原因</loop-abort>，需人工介入用 <loop-pause>需要什么</loop-pause>"
+SIGNAL_HINT="Abort with <loop-abort>reason</loop-abort>, need human with <loop-pause>what's needed</loop-pause>"
 
 # Compute PUA pressure level based on iteration count (mirrors SKILL.md escalation table)
 if [[ $NEXT_ITERATION -le 3 ]]; then
-  PUA_PRESSURE="▎ 第 ${NEXT_ITERATION} 轮迭代，稳步推进。"
+  PUA_PRESSURE="▎ Iteration ${NEXT_ITERATION} — steady progress."
 elif [[ $NEXT_ITERATION -le 7 ]]; then
-  PUA_PRESSURE="▎ 第 ${NEXT_ITERATION} 轮了还没搞定？换方案，别原地打转。"
+  PUA_PRESSURE="▎ Iteration ${NEXT_ITERATION} — still not done? Switch approach, stop spinning."
 elif [[ $NEXT_ITERATION -le 15 ]]; then
-  PUA_PRESSURE="▎ 第 ${NEXT_ITERATION} 轮。底层逻辑到底是什么？你在重复同一个错误。"
+  PUA_PRESSURE="▎ Iteration ${NEXT_ITERATION}. What's the underlying logic? You're repeating the same mistake."
 elif [[ $NEXT_ITERATION -le 25 ]]; then
-  PUA_PRESSURE="▎ 第 ${NEXT_ITERATION} 轮。3.25 的边缘了。穷尽了吗？"
+  PUA_PRESSURE="▎ Iteration ${NEXT_ITERATION}. Edge of 3.25 territory. Have you exhausted everything?"
 else
-  PUA_PRESSURE="▎ 第 ${NEXT_ITERATION} 轮。最后几轮。要么搞定，要么准备体面退出。"
+  PUA_PRESSURE="▎ Iteration ${NEXT_ITERATION}. Final rounds. Either get it done, or prepare a graceful exit."
 fi
 
 if [[ "$COMPLETION_PROMISE" != "null" ]] && [[ -n "$COMPLETION_PROMISE" ]]; then
