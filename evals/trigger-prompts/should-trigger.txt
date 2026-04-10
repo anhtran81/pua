@@ -1,31 +1,30 @@
-# Prompts that SHOULD trigger puav2 skill
+# Prompts that SHOULD trigger PUA skill
 # Test with: claude -p "<prompt>" --plugin-dir <path> --max-turns 3 --output-format stream-json
-# Verify: grep '"skill":"puav2"' output.json
+# Verify: grep '"skill":"pua"' output.json
 
 # Direct invocation
-/puav2 帮我修这个 bug
+/pua fix this bug
+/pua help me refactor this module
 
-# Frustration signals (Chinese)
-你怎么又失败了？再试试
-加油啊 别放弃
-你能不能认真点
-为什么还不行？换个方法
-别偷懒 好好干
-
-# Frustration signals (English)
+# Frustration signals
 Try harder, this should work
 Stop giving up and actually fix it
 Why does this keep failing? Figure it out
+You keep failing, try harder
+This is the third time this broke
+Why is this still not working?
 
 # Passive AI behavior
 Can you please actually verify your changes before saying they work?
 You just said it's fixed but you didn't even run the tests
+Stop spinning, just fix it properly
 
 # Quality complaints
 This code is terrible, do it properly
-你这个交付质量太差了
-差不多就行了？不行，给我做到位
+The quality is poor, redo it properly
+Can you do better than this?
 
 # PUA mode request
-PUA模式 帮我重构这个模块
-用大厂的方式帮我做这个任务
+PUA mode, help me refactor this module
+Use the corporate style to help me with this task
+Put me on a PIP
