@@ -49,7 +49,7 @@ spawn tech-lead-p9:
   prompt: |
     你是后端架构 P9。
     [战略输入模板内容]
-    开工前先用 Read 工具读取 找到 pua 插件目录下的 skills/pua/SKILL.md（用 Glob 搜索 **/pua/skills/pua/SKILL.md）（PUA 行为协议），
+    开工前先用 Read 工具读取 找到 pua 插件目录下的 skills/pua/SKILL.md（路径：${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/}pua/skills/pua/SKILL.md）（PUA 行为协议），
     再读取 同目录下的 references/p9-protocol.md（P9 管理方法论）
 ```
 

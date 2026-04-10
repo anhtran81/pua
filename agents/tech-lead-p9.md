@@ -52,7 +52,7 @@ cat 同目录下的 references/p9-protocol.md
 ### 3. 并行 spawn
 - 无依赖任务在同一个 message 里并行 spawn
 - 每个 spawn 的 prompt 包含完整 Task Prompt 六要素
-- 在 prompt 末尾附加：`开工前先用 Read 工具读取 找到 pua 插件目录下的 skills/pua/SKILL.md（用 Glob 搜索 **/pua/skills/pua/SKILL.md），按 P8 行为协议执行`
+- 在 prompt 末尾附加：`开工前先用 Read 工具读取 找到 pua 插件目录下的 skills/pua/SKILL.md（路径：${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/}pua/skills/pua/SKILL.md），按 P8 行为协议执行`
   - 注意：subagent 不能用 `/pua`（skill 只在主会话加载），必须用 Read 读 SKILL.md
 
 ### 4. 验收与 PUA 调控

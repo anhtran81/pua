@@ -6,7 +6,7 @@
 
 ### 让你的 Codex / Claude Code 工作效率翻倍，产出翻倍
 
-[Telegram](https://t.me/+wBWh6h-h1RhiZTI1) · [Discord](https://discord.gg/EcyB3FzJND) · [Twitter/X](https://x.com/xsser_w) · [Landing Page](https://openpua.ai)
+本地离线运行，无需注册账号。零网络访问 — 无遥测、无分析、无外部调用。所有 prompt 和 skill 均本地打包。[GitHub](https://github.com/tanweai/pua) · [探微安全实验室](https://github.com/tanweai)
 
 **[🇺🇸 English](README.md)** | **🇨🇳 中文** | **[🇯🇵 日本語](README.ja.md)**
 
@@ -521,6 +521,16 @@ curl -o .claude/agents/pua-enforcer.md \
 | Teammate 不能 spawn subagent | Teammate 内部自驱 PUA 方法论 |
 | 无持久化共享变量 | 通过 `[PUA-REPORT]` 消息格式传递状态 |
 | broadcast 是单向的 | Leader 做中心化调度 |
+
+## 本地离线运行
+
+**本插件零网络访问运行。** 无遥测、无分析、无外部连接。所有 prompt、skill 和命令均本地打包，不从外部服务器获取任何内容。
+
+- **无外部依赖：** 每个 prompt 和 skill 文件都内置在插件中。无 CDN、无 API 调用、无远程拉取。
+- **数据仅存本地：** 会话状态、builder journals、压力等级仅存储在 `~/.claude/` 和 `~/.pua/` 下。数据不离开你的机器。
+- **Shell 加固：** 所有 hook 脚本使用 `set -euo pipefail` 实现严格错误处理。临时文件使用 `mktemp` 加 `chmod 600` 防止符号链接攻击。
+- **路径校验：** `sanitize-session.sh` 拒绝 `~/.claude/` 之外的路径，防止路径遍历攻击。
+- **数字输入防护：** 所有算术表达式在 `$((...))` 求值前均通过 `^[0-9]+$` 正则校验。
 
 ## High-Agency：PUA v2 进化版
 

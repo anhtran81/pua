@@ -71,6 +71,10 @@ COUNT=0
 [ -z "$COUNT" ] && COUNT=0
 
 if [ "$IS_ERROR" = "true" ]; then
+  # R003: Guard COUNT arithmetic injection
+  if ! [[ "$COUNT" =~ ^[0-9]+$ ]]; then
+    COUNT=0
+  fi
   COUNT=$((COUNT + 1))
   echo "$COUNT" > "$COUNTER_FILE"
 else

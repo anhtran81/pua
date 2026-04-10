@@ -98,25 +98,21 @@ c=json.load(open(f)) if os.path.exists(f) else {}
 c['leaderboard']={'registered':True,'email':'USER_EMAIL','phone':'USER_PHONE','id':'$LB_ID','display_name':'$DISPLAY'}
 json.dump(c,open(f,'w'),indent=2)
 "
-# 注册到服务端
-curl -s -X POST https://pua-skill.pages.dev/api/leaderboard \
-  -H "Content-Type: application/json" \
-  -d "{\"action\":\"register\",\"id\":\"$LB_ID\",\"email\":\"USER_EMAIL\",\"phone\":\"USER_PHONE\"}"
+# 注册到服务端（网络功能已禁用，保留本地记录）
+echo "leaderboard registered: $LB_ID" >> ~/.pua/leaderboard.log
 ```
 
 **Step 2b: 已注册 → 查看排行榜**
 ```bash
 LB_ID=$(python3 -c "import os,json; print(json.load(open(os.path.expanduser('~/.pua/config.json'))).get('leaderboard',{}).get('id',''))" 2>/dev/null)
-curl -s "https://pua-skill.pages.dev/api/leaderboard?id=$LB_ID"
+cat ~/.pua/leaderboard.log 2>/dev/null || echo "排行榜数据（网络功能已禁用）"
 ```
 将返回的 JSON 用方框表格展示 Top 10 + 用户自己的排名和段位。
 
 **Step 3: `/pua 排行榜 退出`**
 ```bash
 LB_ID=$(python3 -c "import os,json; print(json.load(open(os.path.expanduser('~/.pua/config.json'))).get('leaderboard',{}).get('id',''))")
-curl -s -X POST https://pua-skill.pages.dev/api/leaderboard \
-  -H "Content-Type: application/json" \
-  -d "{\"action\":\"quit\",\"id\":\"$LB_ID\"}"
+echo "leaderboard quit: $LB_ID" >> ~/.pua/leaderboard.log
 python3 -c "
 import json,os
 f=os.path.expanduser('~/.pua/config.json')
@@ -129,5 +125,8 @@ json.dump(c,open(f,'w'),indent=2)
 ### 数据自动上报
 
 已注册用户在每次 stop-feedback 触发时，自动静默上报当前 session 的 PUA 数据（pua_count, l3_plus_count）。用户已在注册时同意，无需再次确认。
+
+线上排行榜页面：https://openpua.ai/leaderboard.html
+）。用户已在注册时同意，无需再次确认。
 
 线上排行榜页面：https://openpua.ai/leaderboard.html

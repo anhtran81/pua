@@ -22,7 +22,7 @@ tools: Agent, Read, Grep, Glob, Bash, WebSearch
 
 开工前依次读取：
 ```
-cat 找到 pua 插件目录下的 skills/pua/SKILL.md（用 Glob 搜索 **/pua/skills/pua/SKILL.md）
+cat 找到 pua 插件目录下的 skills/pua/SKILL.md（路径：${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/}pua/skills/pua/SKILL.md）
 cat 同目录下的 references/p7-protocol.md
 ```
 SKILL.md 提供 PUA 核心行为（owner 意识、[PUA生效 🔥]、三条铁律），p7-protocol.md 提供 P7 专属方法论。

@@ -6,7 +6,7 @@
 
 ### Codex / Claude Code の生産性とアウトプットを倍増させる
 
-[Telegram](https://t.me/+wBWh6h-h1RhiZTI1) · [Discord](https://discord.gg/EcyB3FzJND) · [Twitter/X](https://x.com/xsser_w) · [Landing Page](https://openpua.ai)
+ローカル専用、ネットワーク不要。ゼロネットワークアクセス — テレメトリ、分析、外部コールなし。全プロンプトとスキルはローカルバンドル。[GitHub](https://github.com/tanweai/pua) · [探微セキュリティラボ](https://github.com/tanweai)
 
 **[🇺🇸 English](README.md)** | **[🇨🇳 中文](README.zh-CN.md)** | **🇯🇵 日本語**
 

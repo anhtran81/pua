@@ -4,7 +4,22 @@
 # Usage: bash sanitize-session.sh [input.jsonl] [output.jsonl]
 
 INPUT="${1:-$(ls -t ~/.claude/projects/*/*.jsonl 2>/dev/null | head -1)}"
-OUTPUT="${2:-/tmp/pua-sanitized-session.jsonl}"
+
+# R004: Use mktemp instead of fixed /tmp/ path to prevent symlink attacks
+OUTPUT="${2:-$(mktemp ~/.claude/pua-sanitized-session.XXXXXX.jsonl)}"
+chmod 600 "$OUTPUT"
+
+# R005: Validate INPUT path is under ~/.claude/ to prevent path traversal
+REALINPUT=$(realpath -m "$INPUT" 2>/dev/null || echo "$INPUT")
+case "$REALINPUT" in
+  "$HOME"/.claude/*|"$HOME"/.claude)
+    INPUT="$REALINPUT"
+    ;;
+  *)
+    echo "sanitize-session: INPUT must be under ~/.claude/ (got: $INPUT)" >&2
+    exit 1
+    ;;
+esac
 
 if [ -z "$INPUT" ] || [ ! -f "$INPUT" ]; then
   echo "No session file found" >&2

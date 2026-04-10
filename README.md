@@ -6,7 +6,7 @@
 
 ### Double your Codex / Claude Code productivity and output
 
-[Telegram](https://t.me/+wBWh6h-h1RhiZTI1) · [Discord](https://discord.gg/EcyB3FzJND) · [Twitter/X](https://x.com/xsser_w) · [Landing Page](https://openpua.ai)
+Local-only, no account required. Zero network access — no telemetry, no analytics, no external calls. All prompts and skills are bundled locally. [GitHub](https://github.com/tanweai/pua) · [TanWei Security Lab](https://github.com/tanweai)
 
 **[🇨🇳 中文](README.zh-CN.md)** | **[🇯🇵 日本語](README.ja.md)** | **🇺🇸 English**
 
@@ -541,6 +541,16 @@ Spawn pua-enforcer as an independent watchdog in your Agent Team.
 | Teammates can't spawn subagents | Teammates self-enforce PUA methodology internally |
 | No persistent shared variables | State transferred via `[PUA-REPORT]` message format |
 | Broadcast is one-way | Leader acts as centralized coordinator |
+
+## Local-Only Operation
+
+**This plugin operates with zero network access.** No telemetry, no analytics, no outbound connections. All prompts, skills, and commands are bundled locally — nothing is fetched from external servers.
+
+- **No external dependencies:** Every prompt and skill file ships inside the plugin. No CDN, no API calls, no remote fetching.
+- **All data stays on-disk:** Session state, builder journals, and pressure levels are stored only under `~/.claude/` and `~/.pua/`. No data leaves your machine.
+- **Shell hardening:** All hook scripts use `set -euo pipefail` for strict error handling. Temporary files use `mktemp` with `chmod 600` to prevent symlink attacks.
+- **Path validation:** `sanitize-session.sh` rejects paths outside `~/.claude/`. Path traversal attacks are blocked.
+- **Numeric input guards:** All arithmetic expressions are guarded by `^[0-9]+$` regex validation before `$((...))` evaluation.
 
 ## Architecture & Commands
 

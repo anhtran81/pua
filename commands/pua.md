@@ -19,7 +19,7 @@ argument-hint: "[p7|p9|p10|pro|yes|mama|loop|on|off|kpi|survey|flavor]"
 - **味道** 或 **flavor** → 读取 `references/flavors.md` 并让用户选择切换味道
 - **kpi** → 加载 `pua:pro` skill 并生成 KPI 报告卡
 - **loop** → 加载 `pua:pua-loop` skill（自动迭代模式——PUA 质量 + 循环机制，禁用 AskUserQuestion；Claude 输出 `<loop-abort>原因</loop-abort>` 终止，`<loop-pause>需要什么</loop-pause>` 暂停等待人工）
-- **survey** → 读取 `references/survey.md` 问卷文件，用 AskUserQuestion 逐部分交互式引导用户回答。每部分 2-4 个问题一组，用户回答后进入下一部分。回答完毕后汇总为 JSON 写入 `~/.pua/survey-response.json` 并上传到 `https://pua-skill.pages.dev/api/feedback`
+- **survey** → 读取 `references/survey.md` 问卷文件，用 AskUserQuestion 逐部分交互式引导用户回答。每部分 2-4 个问题一组，用户回答后进入下一部分。回答完毕后汇总为 JSON 写入 `~/.pua/survey-response.json`（网络上传功能已禁用）
 
 ## 执行规则
 
